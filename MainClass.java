@@ -3,20 +3,51 @@ package ru.geekbrains.maksimov.Java2;
 import java.util.Scanner;
 
 public class MainClass {
-    public static String in = "1 3 1 2\n2 3 2 2\n5 6 7 1\n3 3 1 0";
-    public static Scanner sc = new Scanner(System.in);
+    public static String in = "52 3 1 sdfg\n2 3 2 2\n5 1 7 1\n3 3 1 0";
+
 
 
     public static void main(String[] args) {
-       input_flow(in);
-        System.out.println(in);
-        sc.next();
 
+
+        try {
+            System.out.println(mathematics(stringToArr(in)));
+        }catch (MyStringExeption e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public static String[][] input_flow (String str) {
-        String[][] arr =  {{"1","2"},{"3","4"}};
-        return arr;
+    public static String[][] stringToArr(String str) throws MyStringExeption {
+        String[] arr1;
+        arr1 = str.split("\n");
+        if (arr1.length > 4) throw new MyStringExeption ("Не должно быть более 3 знаков перехода на новую строку");
+        String[][] arr2 = new String[arr1.length][arr1.length];
+        for (int i = 0; i<arr1.length; i++){
+            arr2[i] = arr1[i].split(" ");
+            if (arr2[i].length > 4) throw new MyStringExeption("Не должно быть более 4 символов в строке");
+        }
+        return arr2;
+    }
+
+    public static double mathematics (String [][] arr) throws NumberFormatException {
+        int sum = 0;
+        for (int i = 0; i<arr.length; i++){
+            for (int j = 0; j<arr[i].length; j++){
+                try {
+                    sum += Integer.parseInt(arr[i][j]);
+                }
+               catch (NumberFormatException e){
+                   System.out.println("неподходящий символ: " + arr[i][j]);
+                   System.out.println("находится на " + ((i)*arr.length+(j+1)) + " позиции в строке ввода");
+                 //  System.exit(1);
+                   // как вариант, если например надо все таки все посчитать
+                   System.out.println("неподходящие символы не учитываем в расчетах");
+
+               }
+            }
+
+        }
+            return sum/2;
     }
 
 }

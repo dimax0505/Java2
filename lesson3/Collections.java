@@ -15,6 +15,7 @@ public class Collections {
         System.out.println(Arrays.asList(str.split(" ")));
         System.out.println(uniqlist(str));
         System.out.println(calcIn(str));
+        System.out.println(calcInSimpl(str));
 
         //Задание №2
 
@@ -47,11 +48,26 @@ public class Collections {
 
     private static TreeMap calcIn(String str) {
         TreeMap<String, Integer> map = new TreeMap<>();
-        for (String aList : Arrays.asList(str.split(" "))) {
+        for (String aList : Arrays.asList(stringToArr(str))) {
             if (map.get(aList) == null)
                 map.put(aList, 1);
             else map.put(aList, map.get(aList) + 1);
         }
         return map;
     }
+
+    private static TreeMap calcInSimpl (String str){
+        TreeMap<String, Integer> map = new TreeMap<>();
+        String[] strArr = stringToArr(str);
+        for (int i=0; i<strArr.length; i++){
+            if (map.get(strArr[i])==null)
+                map.put(strArr[i],1);
+                else map.put(strArr[i], map.get(strArr[i])+1);
+        }return map;
+    }
+
+    private static String[] stringToArr (String str) {
+        return str.split(" ");
+    }
+
 }

@@ -1,4 +1,4 @@
-package ru.geekbrains.maksimov.Java2.Lesson4;
+package ru.geekbrains.maksimov.Java2.lesson4;
 
 import javax.swing.*;
 import java.awt.*;

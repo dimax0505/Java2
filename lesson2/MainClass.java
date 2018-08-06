@@ -1,6 +1,4 @@
-package ru.geekbrains.maksimov.Java2;
-
-import java.util.Scanner;
+package ru.geekbrains.maksimov.Java2.lesson2;
 
 public class MainClass {
     public static String in = "52 3 kjg 1\n2 3 2 2\n5 1 7 1\n3 1 0 7";

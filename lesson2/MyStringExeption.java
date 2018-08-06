@@ -1,4 +1,4 @@
-package ru.geekbrains.maksimov.Java2;
+package ru.geekbrains.maksimov.Java2.lesson2;
 
 public class MyStringExeption extends Throwable {
     @Override

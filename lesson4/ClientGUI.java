@@ -2,8 +2,9 @@ package ru.geekbrains.maksimov.Java2.lesson4;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.io.*;
+import java.time.ZonedDateTime;
 
 public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
     private static final int WIDTH = 400;
@@ -22,6 +23,10 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JButton btnDisconnect = new JButton("<html><b>Disconnect</b></html>");
     private final JTextField tfMessage = new JTextField();
     private final JButton btnSend = new JButton("Send");
+    private String logFile = "log.txt";
+    private boolean flag;
+    private int newLogName = 1;
+
 
     private final JList<String> userList = new JList<>();
 
@@ -42,6 +47,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         setTitle("Chat Client");
 
         log.setEditable(false);
+        log.setLineWrap(true);
         JScrollPane scrollLog = new JScrollPane(log);
         JScrollPane scrollUsers = new JScrollPane(userList);
         String[] users = {"user1_with_an_exceptionally_long_nickname", "user2", "user3", "user4", "user5", "user6", "user7", "user8", "user9", "user10"};
@@ -49,6 +55,9 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         scrollUsers.setPreferredSize(new Dimension(100, 0));
         cbAlwaysOnTop.addActionListener(this);
         btnLogin.addActionListener(this);
+        btnSend.addActionListener(this);
+        tfMessage.addActionListener(this);
+
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
@@ -88,10 +97,44 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         if (src == cbAlwaysOnTop) {
 //            setAlwaysOnTop(!isAlwaysOnTop());
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
-        } else {
-            throw new RuntimeException("Unknown source: " + src);
+        } else if (src == btnSend || src == tfMessage) {
+            log.append(tfMessage.getText() + "\n");
+            recordLogToFile(tfMessage.getText());
+            tfMessage.setText(null);
+        }
+
+        else {
+            throw new RuntimeException("Unknown source+++: " + src);
         }
     }
+
+    public void recordLogToFile(String str) {
+        do {
+            try {
+                FileOutputStream fos = new FileOutputStream(logFile, true);
+                String record = "Data: " + ZonedDateTime.now().toString() + "\n  message: " + str + "\n";
+                fos.write(record.getBytes());
+                fos.flush();
+                fos.close();
+                flag = true;
+            }
+            catch (FileNotFoundException e) {
+                flag = false;
+                logFile = "log" + newLogName++ + ".txt";
+                recordLogToFile("Пришлось открыть новый лог потому что: " + e.getMessage() + "\n" +
+                        "чуть не потеряли сообщение: \n" + str);
+            }
+            catch (IOException e) {
+                flag = false;
+                logFile = "log" + newLogName++ + ".txt";
+                recordLogToFile("Пришлось открыть новый лог потому что: " + e.getMessage() + "\n" +
+                        "чуть не потеряли сообщение: \n" + str);
+            }
+        } while (!flag);
+    }
+
+
+
 
     // Сообщение должно отсылаться либо по нажатию кнопки на форме, либо по нажатию кнопки Enter.
     // Создать лог в файле (записи в лог должны делаться при отправке сообщения)

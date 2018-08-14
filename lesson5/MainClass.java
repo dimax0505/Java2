@@ -11,6 +11,13 @@ public class MainClass {
 
     public static void main(String[] args) {
 
+//        try {
+//            new Thread("r1").join();
+//            new Thread("r2").join();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException();
+//        }
+
 
         simplcalc(arr1);
 
@@ -49,11 +56,11 @@ public class MainClass {
         System.arraycopy(arr, h, a2, 0, syze-h);
        // System.out.println(a1.length + " " + a2.length);
         System.out.println("Время разбивки массива: " + (System.currentTimeMillis()-time));
-        TreadCalcArr t1 = new TreadCalcArr("1", a1,0);
-        TreadCalcArr t2 = new TreadCalcArr("2", a2,h);
+//        TreadCalcArr t1 = new TreadCalcArr("1", a1,0);
+//        TreadCalcArr t2 = new TreadCalcArr("2", a2,h);
         try {
-            t1.join();
-            t2.join();
+            new TreadCalcArr("1", a1,0).join();
+            new TreadCalcArr("2", a2,h).join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
